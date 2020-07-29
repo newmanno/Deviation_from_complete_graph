@@ -33,6 +33,7 @@ pair,partner1,partner2,pval_E1,pval_E2,comb_pval,comb_rho,comb_FDR,partner1InFol
 """
 
 # import the io and networkx module
+import argparse
 import csv
 import sys
 from collections import Counter
@@ -51,10 +52,20 @@ class dictionary(dict):
 corr_dict = dictionary()
 fc = {}
 
-net_file = sys.argv[1]
+parser = argparse.ArgumentParser(description='Example: python dev_from_expected --input <network file> --num_groups <number of groups> \n\n See README.md for more info\n\n')
+parser.add_argument("--input", help = 'Network file (see README.md for example)')
+parser.add_argument("--num_groups", help = 'Number of groups correlations were initially performed in')
+
+args = parser.parse_args()
+
+if (args.input != '') and (args.num_groups != ''):
+    network = args.input
+    groups = int(args.num_groups)
+else:
+    raise Exception("Error: please provide both a network file and the number of groups correlations were performed in. See --help for more information.")
 
 # import specified file into python
-with open(net_file) as csvfile:
+with open(network) as csvfile:
     file = csv.reader(csvfile, delimiter = ',')
     for row in file:
 
@@ -65,9 +76,12 @@ with open(net_file) as csvfile:
             list_to_tuple = tuple(nodes)
             corr_dict.add(list_to_tuple,row[3:len(row)])
             
+            fc_node1_column = 11 + groups
+            fc_node2_column = 12 + groups
+            
             # Find FC direction of each node
-            fc[row[1]] = row[13]
-            fc[row[2]] = row[14]
+            fc[row[1]] = row[fc_node1_column].strip()
+            fc[row[2]] = row[fc_node2_column].strip()
         else:
             print("An NA was found for a correlation. Continuing anyways but omitting this correlation.")
             
@@ -80,24 +94,28 @@ del corr_dict['partner1', 'partner2']
 # Get a dictionary of all correlation directions and count all positive and negative edges in observed network
 pos_corr = 0 # counter for the number of positive edges
 neg_corr = 0 # counter for the number of positive edges
+rho_column = 7 + groups
 for key,value in corr_dict.items():
     try:    
-        if str(value[9]) == '1':
+        if str(value[rho_column].strip()) == '1':
             pos_corr += 1
-        elif str(value[9]) == '-1':
+        elif str(value[rho_column].strip()) == '-1':
             neg_corr += 1
     except:
         print("ERROR: an incorrect value was supplied for correlation directions. Aborting.")         
      
 nedges = pos_corr + neg_corr        
         
-print("There are " + str(pos_corr) + " positive edges and " + str(neg_corr) + " negative edges for a total of " + str(nedges) + " edges.")
+print("\nThere are " + str(pos_corr) + " positive edges and " + str(neg_corr) + " negative edges for a total of " + str(nedges) + " edges.\n")
 
-# Count the number of positive and negative nodes       
+# Count the number of positive and negative nodes    
 nodedir = Counter(fc.values())
 pos_nodes = nodedir['1']
-neg_nodes = nodedir['-1']         
+neg_nodes = nodedir['-1']  
+
 total_nodes = int(pos_nodes) + int(neg_nodes)
+print("\nThere are " + str(pos_nodes) + " positive nodes and " + str(neg_nodes) + " negative nodes for a total of " + str(total_nodes) + " nodes.\n")
+
 obs_edge_node_ratio = nedges / total_nodes
 
 obs_posneg_node_ratio = int(pos_nodes) / int(neg_nodes)
