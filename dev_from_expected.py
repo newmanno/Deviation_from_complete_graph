@@ -35,10 +35,8 @@ pair,partner1,partner2,pval_E1,pval_E2,comb_pval,comb_rho,comb_FDR,partner1InFol
 # import the io and networkx module
 import argparse
 import csv
-import sys
 from collections import Counter
 from math import factorial
-
 
 # Create a dictionary function to easily add keys and values to dictionary
 class dictionary(dict):
@@ -59,13 +57,18 @@ parser.add_argument("--num_groups", help = 'Number of groups correlations were i
 args = parser.parse_args()
 
 if (args.input != '') and (args.num_groups != ''):
-    network = args.input
+    net_file = args.input
+    net_file_trimmed = net_file[:-4] # trim the ".csv" or ".txt" from the input file string   
     groups = int(args.num_groups)
 else:
     raise Exception("Error: please provide both a network file and the number of groups correlations were performed in. See --help for more information.")
 
+# Counters for puc calculation
+puc_compliant = 0
+puc_noncompliant = 0
+
 # import specified file into python
-with open(network) as csvfile:
+with open(net_file) as csvfile:
     file = csv.reader(csvfile, delimiter = ',')
     for row in file:
 
@@ -75,21 +78,35 @@ with open(network) as csvfile:
             nodes = row[1:3]
             list_to_tuple = tuple(nodes)
             corr_dict.add(list_to_tuple,row[3:len(row)])
-            
+      
+            # Find FC direction of each node (for calculating deviation from expected later on)
+            fc[row[1]] = row[13]
+            fc[row[2]] = row[14]                
+        
             fc_node1_column = 11 + groups
             fc_node2_column = 12 + groups
             
             # Find FC direction of each node
             fc[row[1]] = row[fc_node1_column].strip()
             fc[row[2]] = row[fc_node2_column].strip()
+            
+            # Is each edge PUC-compliant?
+            puc_col = 14 + groups
+        
+            if row[puc_col].strip() == str(1):
+                puc_compliant += 1
+            elif row[puc_col].strip() == str(-1):
+                puc_noncompliant += 1
+                     
         else:
             print("An NA was found for a correlation. Continuing anyways but omitting this correlation.")
-            
+
+    csvfile.close()  
+ 
+# This removes the header of the data frame essentially
+del corr_dict['partner1', 'partner2']         
 del fc['partner2']
 del fc['partner1']
-
-# This removes the header of the data frame essentially
-del corr_dict['partner1', 'partner2']
 
 # Get a dictionary of all correlation directions and count all positive and negative edges in observed network
 pos_corr = 0 # counter for the number of positive edges
@@ -153,12 +170,18 @@ dev_norm_negpos = (obs_negpos_ratio - ideal_ratio_negpos) / ideal_ratio_negpos
 # calculate the normalized deviation of the edge:node (density) from the full graph
 dens_dev = (abs(obs_edge_node_ratio - expec_edge_node_ratio)) / expec_edge_node_ratio
 
+# Calculate PUC (the proportion of edges that do not follow the expected direction)
+puc = puc_noncompliant / nedges
+
 with open("deviation_output.txt", "w") as file:
     file.write("Number of total nodes: " + str(total_nodes) + "\n")    
     file.write("Number of positive nodes: " + str(pos_nodes) + "\n")
     file.write("Number of negative nodes: " + str(neg_nodes) + "\n")
     file.write("Positive:negative node ratio: %.3f"  % obs_posneg_node_ratio + "\n")   
-    file.write("Negative:positive node ratio: %.3f"  % obs_negpos_node_ratio + "\n\n") 
+    file.write("Negative:positive node ratio: %.3f"  % obs_negpos_node_ratio + "\n") 
+    file.write("Number of PUC-compliant edges: " + str(puc_compliant) + "\n")     
+    file.write("Number of PUC-noncompliant edges: " + str(puc_noncompliant) + "\n")     
+    file.write("PUC: " + str(puc) + "\n\n")     
   
     file.write("### OBSERVED values ###\n") 
     file.write("Observed number of total edges: " + str(nedges) + "\n")        
