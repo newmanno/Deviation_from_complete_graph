@@ -78,10 +78,6 @@ with open(net_file) as csvfile:
             nodes = row[1:3]
             list_to_tuple = tuple(nodes)
             corr_dict.add(list_to_tuple,row[3:len(row)])
-      
-            # Find FC direction of each node (for calculating deviation from expected later on)
-            fc[row[1]] = row[13]
-            fc[row[2]] = row[14]                
         
             fc_node1_column = 11 + groups
             fc_node2_column = 12 + groups
