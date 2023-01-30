@@ -15,8 +15,8 @@ Example command:
 	
 Arguments:
 - Required: 
-	--input  -  network file of correlations between parameters, including directions of correlations, fold changes, and whether the edge is PUC-compliant
-	--num_groups  -  number of groups that correlations were originally calculated in. For example, if you calculated correlations in two different groups, WD and ND, then your argument would be "--num_groups 2"
+- --input  -  network file of correlations between parameters, including directions of correlations, fold changes, and whether the edge is PUC-compliant
+- --num_groups  -  number of groups that correlations were originally calculated in. For example, if you calculated correlations in two different groups, WD and ND, then your argument would be "--num_groups 2"
 		
 	Optional:
 		None at this time
