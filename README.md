@@ -6,7 +6,7 @@
  Purpose:
  Calculate how the observed network deviates from an ideal, complete graph that contains all expected correlations.
 
- Description: This file takes as input a network file (format below) and will calculate all edge:node ratios (AKA "density"), PUC-compliant edges, and how the network deviates from a complete graph (i.e. all nodes connect to all other nodes) with the same number of nodes.
+ Description: This file takes as input a network file (format below) and will calculate all edge:node ratios (AKA "density"), PUC-compliant edges, and how the network deviates from a complete graph (i.e. all nodes connect to all other nodes) with the same number of nodes. **As of right now, the structure of the network file it takes in is specific as it is the output of a previous file in a pipeline**
  
  Dependencies: none (all from base Python)
  
