@@ -23,23 +23,23 @@
 		
  Example input network header:
 	pair,partner1,partner2,pval_E1,pval_E2,comb_pval,comb_rho,comb_FDR,partner1InFold,partner1_FoldChange,partner2InFold,partner2_FoldChange,corr_direction,partner1_FC_direction,partner2_FC_direction,IfFoldChangeDirectionMatch,PUC
-			- pair: gene1 <==> gene2
-			- partner1: gene1
-			- partner2: gene2
-			- pval_E1: correlation pvalue in experiment 1
-			- pval_E2: correlation pvalue in Experiment 2
-			- comb_pval: Fisher's combined pvalue across both experiments
-			- comb_rho: combined rho coefficient across both experiments
-			- comb_FDR: FDR calculated off the combined pvalue
-			- partner1InFold: gene1
-			- partner1_FoldChange: Fold change of gene1
-			- partner2InFold: gene2
-			- partner2_FoldChange: Fold change of gene2
-			- corr_direction: correlation direction (either -1 or 1)
-			- partner1_FC_direction: Fold change direction of gene1 (either -1 or 1)
-			- partner2_FC_direction: Fold change direction of gene2 (either -1 or 1)    
-			- IfFoldChangeDirectionMatch: Are the previous 2 values identical (1 if yes, -1 if no)
-			- PUC: Is the correlation PUC-compliant (are neg-neg or pos-pos correlations +ve and pos-neg correlations -ve?)
+- pair: gene1 <==> gene2
+- partner1: gene1
+- partner2: gene2
+- pval_E1: correlation pvalue in experiment 1
+- pval_E2: correlation pvalue in Experiment 2
+- comb_pval: Fisher's combined pvalue across both experiments
+- comb_rho: combined rho coefficient across both experiments
+- comb_FDR: FDR calculated off the combined pvalue
+- partner1InFold: gene1
+- partner1_FoldChange: Fold change of gene1
+- partner2InFold: gene2
+- partner2_FoldChange: Fold change of gene2
+- corr_direction: correlation direction (either -1 or 1)
+- partner1_FC_direction: Fold change direction of gene1 (either -1 or 1)
+- partner2_FC_direction: Fold change direction of gene2 (either -1 or 1)    
+- IfFoldChangeDirectionMatch: Are the previous 2 values identical (1 if yes, -1 if no)
+- PUC: Is the correlation PUC-compliant (are neg-neg or pos-pos correlations +ve and pos-neg correlations -ve?)
 			
  Output:
 	Outputs a text file with each calculated parameter and its value. Values are rounded to 3 decimal places.
