@@ -14,12 +14,12 @@ Example command:
 	python dev_from_expected.py --input path/to/network/file --num_groups <number of groups>
 	
 Arguments:
-- Required: 
+Required: 
 - --input  -  network file of correlations between parameters, including directions of correlations, fold changes, and whether the edge is PUC-compliant
 - --num_groups  -  number of groups that correlations were originally calculated in. For example, if you calculated correlations in two different groups, WD and ND, then your argument would be "--num_groups 2"
 		
-	Optional:
-		None at this time
+Optional:
+- None at this time
 		
  Example input network header:
 	pair,partner1,partner2,pval_E1,pval_E2,comb_pval,comb_rho,comb_FDR,partner1InFold,partner1_FoldChange,partner2InFold,partner2_FoldChange,corr_direction,partner1_FC_direction,partner2_FC_direction,IfFoldChangeDirectionMatch,PUC
