@@ -3,33 +3,6 @@
 Created on Tue Jul 21 11:47:38 2020
 
 @author: Nolan K Newman <newmanno@oregonstate.edu>
-
-This code takes as input the output of Richard's pipeline (see below) and will calculate the ratio of positive to negative nodes, edges/nodes, number of positive correlations, number of negative correlations, total number of correlations, and the deviation from expected raio. The deviation from expected is calculated by taking the observed positive:negative correlation ratio and dividing it by the ideal positive to negative ratio. The ideal ratio can be calculated by considering a complete graph with the same number of input nodes, then calculating how many edges would be negative and positive, assuming the complete graph is PUC-compliant (i.e. all pos-pos or neg-neg edges are a positive correlation and all pos-neg edges are a negative correlation.
-
-NOTE: THESE VALUES ARE NOT NORMALIZED SO ONE NETWORK WITH A 50:50 RATIO VS ONE NETWORK THAT HAS A RATIO OF 1:99 ARE NOT YET COMPARABLE. WE WILL BE DOING THE NORMALIZATION AT A LATER. 
-
-Python version: 3.5.1
-Dependencies: pickle, networkx 
-
-Example header for file (CSV)
-pair,partner1,partner2,pval_E1,pval_E2,comb_pval,comb_rho,comb_FDR,partner1InFold,partner1_FoldChange,partner2InFold,partner2_FoldChange,corr_direction,partner1_FC_direction,partner2_FC_direction,IfFoldChangeDirectionMatch,PUC
-    - pair: gene1 <==> gene2
-    - partner1: gene1
-    - partner2: gene2
-    - pval_E1: correlation pvalue in experiment 1
-    - pval_E2: correlation pvalue in Experiment 2
-    - comb_pval: Fisher's combined pvalue across both experiments
-    - comb_rho: combined rho coefficient across both experiments
-    - comb_FDR: FDR calculated off the combined pvalue
-    - partner1InFold: gene1
-    - partner1_FoldChange: Fold change of gene1
-    - partner2InFold: gene2
-    - partner2_FoldChange: Fold change of gene2
-    - corr_direction: correlation direction (either -1 or 1)
-    - partner1_FC_direction: Fold change direction of gene1 (either -1 or 1)
-    - partner2_FC_direction: Fold change direction of gene2 (either -1 or 1)    
-    - IfFoldChangeDirectionMatch: Are the previous 2 values identical (1 if yes, -1 if no)
-    - PUC: Is the correlation PUC-compliant (are neg-neg or pos-pos correlations +ve and pos-neg correlations -ve?)
 """
 
 # import the io and networkx module
