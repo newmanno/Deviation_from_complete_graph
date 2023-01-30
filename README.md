@@ -8,15 +8,15 @@
 
  Description: This file takes as input a network file (format below) and will calculate all edge:node ratios (AKA "density"), PUC-compliant edges, and how the network deviates from a complete graph (i.e. all nodes connect to all other nodes) with the same number of nodes. **As of right now, the structure of the network file it takes in is specific as it is the output of a previous file in a pipeline**
  
- Dependencies: none (all from base Python)
+Dependencies: none (all from base Python)
  
- Example command:
+Example command:
 	python dev_from_expected.py --input path/to/network/file --num_groups <number of groups>
 	
- Arguments:
-	Required: 
-		--input  -  network file of correlations between parameters, including directions of correlations, fold changes, and whether the edge is PUC-compliant
-		--num_groups  -  number of groups that correlations were originally calculated in. For example, if you calculated correlations in two different groups, WD and ND, then your argument would be "--num_groups 2"
+Arguments:
+- Required: 
+	--input  -  network file of correlations between parameters, including directions of correlations, fold changes, and whether the edge is PUC-compliant
+	--num_groups  -  number of groups that correlations were originally calculated in. For example, if you calculated correlations in two different groups, WD and ND, then your argument would be "--num_groups 2"
 		
 	Optional:
 		None at this time
